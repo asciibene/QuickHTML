@@ -1,26 +1,14 @@
-#Quick Html 
+#Quick Html
+
 import curses as curses
 import os.path
-
-def enc(tag,cstr,attr=None):
-  if attr == None:
-    return '<'+tag+'>'+cstr+'</'+tag+'>'
+from helper import *
 
 
-# returns a string to complete a row on screen using the provided character
-def scr_drawrow(char="-"):
-	global maxsz
-	s=char
-	for i in range(maxsz[1]-2):
-		s=s+char		
-	return s
-	
-	
 
 def main():
-  global stdscr
+  global stdscr,maxsz
   stdscr.clear()
-  global maxsz
   maxsz[0],maxsz[1] = stdscr.getmaxyx()
   #tofunc! intro screen
   stdscr.addstr(0, 0, "rows {} | cols {}".format(maxsz[0],maxsz[1]))
@@ -36,6 +24,7 @@ def main():
           cmd_new_file()
           return 0
       stdscr.clear()
+
 
 def cmd_load_file():
   global maxsz, prow, stdscr
@@ -56,10 +45,10 @@ def cmd_load_file():
         curses.nonl()
         intkey=None
         while not intkey==13:
-            intkey=stdscr.getch()
+          intkey=stdscr.getch()
         if intkey==13:
-            curses.nl()
-            cmd_editor(fn)
+          curses.nl()
+          cmd_editor(fn)
     elif os.path.exists(infn) is False:
         stdscr.clear()
         stdscr.addstr(2,0,"File does not exist")
@@ -77,19 +66,25 @@ def cmd_new_file():
   curses.noecho()
   cmd_editor(fn)
 
-######### Main Editor Screen Func ########
+######### XXX Main Editor Screen Func XXX ########
 def cmd_editor(fh):
   stdscr.clear()
   incmd=None
   flag_exit=False
-  while not incmd == "q" or flag_exit == True:
+  while not incmd == "q" or flag_exit is True:
+    stdscr.nodelay(False)
     incmd=stdscr.getkey()
+    if incmd==":":
+      stdscr.move(0,0)
+      stdscr.deleteln()
+      # ~ stdscr.addstr(0,0,)
     stdscr.addstr(0,0,"Editing file {}".format(fh.name))
-    stdscr.addstr(1,0,scr_drawrow("-"))
+    # ~ stdscr.addstr(1,0,scr_drawrow("-"))
     stdscr.refresh()
   fh.close()
   return
 ####### Editor END ############# Editor END ########    
+
 maxsz=[0,0]
 
 stdscr=curses.initscr()
