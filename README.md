@@ -2,4 +2,4 @@
 
 (*Being rewritten*)
 
-A GUItool to quickly and efficiently convert a simple text format to full-fledged html documents. The tool also includes a simple CLI tool to bring manual changes.
+A GUI tool to quickly and efficiently convert a simple text format to full-fledged html documents, but also a standard HTML editor
